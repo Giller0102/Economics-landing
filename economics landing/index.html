@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Криптовалюты как резервный актив: потенциал и чувствительность к шокам | ВГТУ 2026</title>
+  <meta name="description" content="Интерактивные метрики исследования ВГТУ: волатильность, VaR/CVaR, максимальная просадка BTC, ETH, TRX и реакция на геополитические шоки, 2019–2026.">
+  <meta name="author" content="Борисевич В.Д., Черных А.В.">
+  <meta name="theme-color" content="#0B1220">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Криптовалюты как резервный актив: потенциал и чувствительность к шокам">
+  <meta property="og:description" content="BTC: волатильность 67%, VaR 95% −19,4%, просадка −72,7%. Интерактивные метрики 2019–2026.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0B1220;
+      --bg-card: #111a2e;
+      --bg-elev: #16213d;
+      --border: #1e2b4a;
+      --text: #e6edf7;
+      --text-dim: #94a3b8;
+      --accent: #2563eb;
+      --risk: #ef4444;
+      --good: #10b981;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); line-height: 1.2; font-weight: 800; letter-spacing: -.02em; }
+    h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); margin-bottom: 8px; font-weight: 700; }
+    .section-sub { color: var(--text-dim); margin-bottom: 24px; font-size: .95rem; }
+
+    /* Hero */
+    .hero { padding: 72px 0 56px; text-align: center; }
+    .hero .badge { display: inline-block; padding: 4px 12px; background: var(--bg-elev); border-radius: 100px; font-size: .78rem; color: var(--text-dim); margin-bottom: 16px; }
+    .hero h1 { margin-bottom: 16px; }
+    .hero .meta { color: var(--text-dim); font-size: .9rem; }
+    .scroll-hint { margin-top: 32px; color: var(--text-dim); animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* KPI */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .kpi { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .kpi-label { color: var(--text-dim); font-size: .85rem; margin-bottom: 8px; }
+    .kpi-value { font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; }
+    .kpi-note { color: var(--text-dim); font-size: .8rem; margin-top: 10px; line-height: 1.4; }
+    .kpi.risk .kpi-value { color: var(--risk); }
+    .kpi.good .kpi-value { color: var(--good); }
+
+    /* Cards & charts */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .chart-wrap { position: relative; height: 340px; }
+    @media (min-width: 768px) { .chart-wrap { height: 420px; } }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 640px; }
+    th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--text-dim); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+    td small { color: var(--text-dim); font-size: .78rem; }
+    .badge-good, .badge-mixed, .badge-bad, .badge-na { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: .72rem; font-weight: 700; margin-bottom: 4px; }
+    .badge-good { background: rgba(16,185,129,.15); color: #34d399; }
+    .badge-mixed { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .badge-bad { background: rgba(239,68,68,.15); color: #f87171; }
+    .badge-na { background: rgba(148,163,184,.15); color: #94a3b8; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .tab {
+      padding: 8px 14px; background: var(--bg-elev); border: 1px solid var(--border);
+      border-radius: 100px; font-size: .85rem; cursor: pointer;
+      color: var(--text-dim); transition: .15s; user-select: none;
+    }
+    .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* Events strip */
+    .events-strip { display: flex; gap: 12px; overflow-x: auto; padding: 4px 0 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .event-card {
+      flex: 0 0 240px; scroll-snap-align: start;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px;
+    }
+    .ev-date { color: var(--text-dim); font-size: .75rem; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
+    .ev-name { font-weight: 600; font-size: .88rem; margin-bottom: 10px; line-height: 1.3; min-height: 2.6em; }
+    .event-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ev-badge { font-size: .72rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; }
+    .ev-badge.up { background: rgba(16,185,129,.15); color: #34d399; }
+    .ev-badge.down { background: rgba(239,68,68,.15); color: #f87171; }
+    .ev-badge.flat { background: rgba(148,163,184,.15); color: #94a3b8; }
+
+    /* Portfolio slider */
+    .slider-grid { display: grid; gap: 20px; }
+    @media (min-width: 720px) { .slider-grid { grid-template-columns: 1fr 1fr; } }
+    .slider-label { display: flex; justify-content: space-between; align-items: baseline; font-size: .9rem; margin-bottom: 12px; }
+    .slider-label .val { font-weight: 800; color: var(--accent); font-size: 1.1rem; }
+    input[type=range] { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; background: var(--bg-elev); border-radius: 100px; outline: none; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--accent); border-radius: 50%; cursor: pointer; box-shadow: 0 0 0 4px rgba(37,99,235,.2); }
+    input[type=range]::-moz-range-thumb { width: 24px; height: 24px; background: var(--accent); border-radius: 50%; cursor: pointer; border: none; }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .result-box { background: var(--bg-elev); padding: 14px; border-radius: 12px; text-align: center; }
+    .result-box .label { color: var(--text-dim); font-size: .78rem; margin-bottom: 4px; }
+    .result-box .value { font-size: 1.5rem; font-weight: 800; }
+    .result-box.risk .value { color: var(--risk); }
+
+    /* Conclusions */
+    .conclusions { display: grid; gap: 12px; }
+    @media (min-width: 768px) { .conclusions { grid-template-columns: 1fr 1fr; } }
+    .concl-item { display: flex; gap: 14px; padding: 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+    .concl-num { flex: 0 0 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9rem; }
+    .concl-item p { font-size: .9rem; line-height: 1.5; }
+
+    .disclaimer { color: var(--text-dim); font-size: .82rem; margin-top: 16px; padding: 12px 14px; border-left: 3px solid var(--warn); background: rgba(245,158,11,.05); border-radius: 0 8px 8px 0; }
+
+    footer { padding: 40px 0; text-align: center; color: var(--text-dim); font-size: .82rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    .loading { text-align: center; color: var(--text-dim); padding: 40px 0; }
+    .loading.error { color: var(--risk); }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="badge">ВГТУ · Конкурсная работа · 2026</div>
+    <h1>Криптовалюты в цифровую эпоху:<br>резервный потенциал и чувствительность к шокам</h1>
+    <p class="meta">Борисевич В. Д., Черных А. В. · группа Ээб-5 · январь 2019 — август 2026 · 92 наблюдения</p>
+    <div class="scroll-hint">↓ Листайте — цифры и графики</div>
+  </div>
+</section>
+
+<!-- KPI -->
+<section id="kpi-section">
+  <div class="container">
+    <h2>Ключевые метрики</h2>
+    <p class="section-sub">Риск криптовалют на порядок выше риска валютных резервов</p>
+    <div class="kpi-grid" id="kpis">
+      <div class="loading">Загрузка KPI…</div>
+    </div>
+  </div>
+</section>
+
+<!-- CRITERIA MATRIX -->
+<section id="criteria-section">
+  <div class="container">
+    <h2>Критерии резервного актива</h2>
+    <p class="section-sub">Сопоставление по стандарту BPM6 МВФ · таблица 1.1 работы</p>
+    <div class="card table-wrap">
+      <table id="criteria-table">
+        <tbody><tr><td class="loading">Загрузка матрицы…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="disclaimer">
+      <strong>Вывод работы:</strong> единственное существенное преимущество биткоина перед традиционными резервами — устойчивость к блокировке на уровне протокола при самостоятельном хранении ключей. По стабильности стоимости и признанию в статистике резервов он уступает золоту и доллару.
+    </div>
+  </div>
+</section>
+
+<!-- PRICE CHART -->
+<section id="price-section">
+  <div class="container">
+    <h2>Динамика курсов BTC, ETH, TRX</h2>
+    <p class="section-sub">Индекс: 04.2019 = 100 · 25 ключевых точек из 24 событий (таблица 2.1 работы)</p>
+    <div class="card">
+      <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK CHART -->
+<section id="risk-section">
+  <div class="container">
+    <h2>Профиль риска</h2>
+    <p class="section-sub">Переключайте метрику · таблица 2.3 работы</p>
+    <div class="tabs">
+      <div class="tab active" data-metric="annual_volatility">Волатильность</div>
+      <div class="tab" data-metric="var_95_month">VaR 95 %</div>
+      <div class="tab" data-metric="cvar_95_month">CVaR 95 %</div>
+      <div class="tab" data-metric="max_drawdown">Макс. просадка</div>
+    </div>
+    <div class="card">
+      <div class="chart-wrap"><canvas id="riskChart"></canvas></div>
+    </div>
+    <div class="disclaimer">
+      Показаны абсолютные величины потерь. VaR — потеря, не превышаемая в 95 % месяцев; CVaR — средняя потеря в хвосте; MDD — наибольшая просадка от пика до минимума.
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS STRIP -->
+<section id="events-section">
+  <div class="container">
+    <h2>Реакция на 24 события 2019–2026</h2>
+    <p class="section-sub">Изменение курсов в BYN «до → после» · таблица 2.1 работы · листайте вбок →</p>
+    <div class="events-strip" id="events-strip">
+      <div class="loading">Загрузка событий…</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBPERIOD -->
+<section id="subperiod-section">
+  <div class="container">
+    <h2>TRX: устойчивость растёт</h2>
+    <p class="section-sub">Средняя просадка в окнах событий, % · таблица 2.2 работы</p>
+    <div class="card">
+      <div class="chart-wrap"><canvas id="subperiodChart"></canvas></div>
+    </div>
+    <div class="disclaimer">
+      У TRX средняя просадка в окнах событий сократилась с <strong>14,1 %</strong> до <strong>5,2 %</strong>, в 10 из 17 событий второго подпериода — не превышала 1 %. Это связано с ролью TRON как платёжной инфраструктуры (USDT, рублёвый стейблкоин A7A5, оборот > 100 млрд $).
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO SLIDER -->
+<section id="portfolio-section">
+  <div class="container">
+    <h2>Портфельный калькулятор</h2>
+    <p class="section-sub">Модель (1.6): rₚ = (1 − w) · r<sub>USD</sub> + w · r<sub>BTC</sub> · исторические данные 2019–2026</p>
+    <div class="card">
+      <div class="slider-grid">
+        <div>
+          <div class="slider-label">
+            <span>Доля BTC в резервах, w</span>
+            <span class="val" id="wVal">0 %</span>
+          </div>
+          <input type="range" id="wSlider" min="0" max="100" step="1" value="0" aria-label="Доля BTC в портфеле">
+          <div class="result-grid">
+            <div class="result-box">
+              <div class="label">Волатильность портфеля</div>
+              <div class="value" id="portVol">12,5 %</div>
+            </div>
+            <div class="result-box risk">
+              <div class="label">VaR 95 % (месяц, ≈)</div>
+              <div class="value" id="portVar">−6,0 %</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-wrap" style="height: 260px;"><canvas id="portChart"></canvas></div>
+        </div>
+      </div>
+      <div class="disclaimer">
+        Иллюстрация на основе исторической волатильности BTC (67,0 %) и USD/BYN (12,5 %) из таблицы 2.3; ρ = 0,15 — допущение. VaR рассчитан по нормальному приближению; историческая оценка из таблицы 2.3 для BTC — −19,4 %. <strong>Не является прогнозом или инвестиционной рекомендацией.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSIONS -->
+<section id="conclusions-section">
+  <div class="container">
+    <h2>Выводы для резервов</h2>
+    <p class="section-sub">4 тезиса из эмпирического анализа</p>
+    <div class="conclusions">
+      <div class="concl-item">
+        <div class="concl-num">1</div>
+        <p><strong>Биткоин — диверсификатор, не «тихая гавань».</strong> В острых кризисах (COVID-19, −25,5 %) падает вместе с рисковыми активами.</p>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">2</div>
+        <p><strong>Единственное преимущество — санкционная устойчивость.</strong> Устойчивость к блокировке на уровне протокола при самостоятельном хранении ключей. По стабильности и признанию в BPM6 уступает.</p>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">3</div>
+        <p><strong>Стейблкоины — компромисс «стабильность ↔ контроль».</strong> Стабильны по цене, но эмитент может заморозить токены.</p>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">4</div>
+        <p><strong>Доля крипто в резервах должна быть ограничена.</strong> MDD всех трёх активов превышала 60 %, VaR/CVaR в разы выше валютных.</p>
+      </div>
+    </div>
+    <div class="disclaimer">
+      Ограничение методики: месячные данные не учитывают внутримесячные колебания, поэтому оценки просадки и VaR следует рассматривать как нижнюю границу риска.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>Витебский государственный технологический университет · 2026</p>
+    <p style="margin-top:8px;">Борисевич В. Д., Черных А. В. · группа Ээб-5</p>
+    <p style="margin-top:8px; font-size:.78rem;">Данные: таблицы 2.1–2.3, приложение А конкурсной работы</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

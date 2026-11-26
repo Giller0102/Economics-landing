@@ -1,0 +1,280 @@
+{
+    "meta": {
+      "title": "Реакция криптовалют на ключевые события 2019–2026",
+      "source": "Таблицы 2.1 и 2.2",
+      "window_definition": "конец месяца до события → конец месяца события (для MDD — + следующий месяц)",
+      "byn_source": "Таблица 2.1",
+      "usd_mdd_source": "Таблица 2.2",
+      "n_events": 24,
+      "n_events_2019_2021": 7,
+      "n_events_2022_2026": 17
+    },
+    "mechanisms": [
+      { "id": "primary_shock", "label": "Первичный шок",
+        "description": "В момент острого конфликта или санкций курсы падают вместе с фондовыми индексами — инвесторы уходят из рисковых активов в деньги." },
+      { "id": "functional_adaptation", "label": "Функциональная адаптация",
+        "description": "Через дни–недели спрос может восстанавливаться, если децентрализованные сети остаются доступным каналом трансграничных переводов." }
+    ],
+    "events": [
+      { "id": "e01", "month": "2019-05", "event": "Торговая война США–КНР", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 60.1,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 54.5 },
+          "ETH": { "byn_pct": 63.6,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 56.7 },
+          "TRX": { "byn_pct": 40.0,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 34.9 }
+        },
+        "comment": "Рост всех активов; скорее продолжение восстановления рынка после 2018 г., чем реакция на пошлины" },
+  
+      { "id": "e02", "month": "2020-01", "event": "Удар США по Сулеймани", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 31.1,  "usd_mdd": -6.5,  "usd_pct": null, "ar_byn": 25.5 },
+          "ETH": { "byn_pct": 41.4,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 34.5 },
+          "TRX": { "byn_pct": 33.3,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 28.2 }
+        },
+        "comment": "Рост на фоне спроса на защитные активы" },
+  
+      { "id": "e03", "month": "2020-03", "event": "Пандемия COVID-19", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -11.7, "usd_mdd": -25.5, "usd_pct": -25.5, "ar_usd": -30.7, "ar_byn": -17.3 },
+          "ETH": { "byn_pct": -30.9, "usd_mdd": -41.8, "usd_pct": -41.8, "ar_usd": -48.3, "ar_byn": -37.8 },
+          "TRX": { "byn_pct": -25.0, "usd_mdd": -36.8, "usd_pct": -36.8, "ar_usd": -41.5, "ar_byn": -30.1 }
+        },
+        "comment": "Первичный шок: падение вместе с фондовым рынком; в BYN смягчено девальвацией рубля" },
+  
+      { "id": "e04", "month": "2020-05", "event": "Халвинг Биткоина", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -0.6,  "usd_mdd": -3.9,  "usd_pct": null, "ar_byn": -6.2 },
+          "ETH": { "byn_pct": 5.2,   "usd_mdd": -5.4,  "usd_pct": null, "ar_byn": -1.7 },
+          "TRX": { "byn_pct": 0.0,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -5.1 }
+        },
+        "comment": "Слабая реакция: событие было ожидаемым" },
+  
+      { "id": "e05", "month": "2020-11", "event": "Выборы в США", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 44.8,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 39.2 },
+          "ETH": { "byn_pct": 61.2,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 54.3 },
+          "TRX": { "byn_pct": 33.3,  "usd_mdd": -12.5, "usd_pct": null, "ar_byn": 28.2 }
+        },
+        "comment": "Сильный рост на фоне мягкой денежной политики ФРС" },
+  
+      { "id": "e06", "month": "2021-05", "event": "Запрет майнинга в Китае", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -35.9, "usd_mdd": -38.8, "usd_pct": null, "ar_byn": -41.5 },
+          "ETH": { "byn_pct": -5.8,  "usd_mdd": -19.1, "usd_pct": null, "ar_byn": -12.7 },
+          "TRX": { "byn_pct": -44.1, "usd_mdd": -49.3, "usd_pct": null, "ar_byn": -49.2 }
+        },
+        "comment": "Сильнейшее падение BTC и TRX за период" },
+  
+      { "id": "e07", "month": "2021-09", "event": "Сальвадор: BTC — законное платёжное средство", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -7.7,  "usd_mdd": -7.8,  "usd_pct": null, "ar_byn": -13.3 },
+          "ETH": { "byn_pct": -11.9, "usd_mdd": -12.0, "usd_pct": null, "ar_byn": -18.8 },
+          "TRX": { "byn_pct": 0.0,   "usd_mdd": -0.1,  "usd_pct": null, "ar_byn": -5.1 }
+        },
+        "comment": "Умеренная коррекция после ожидаемого события" },
+  
+      { "id": "e08", "month": "2022-02", "event": "Начало СВО, первые пакеты санкций", "mechanism": "functional_adaptation",
+        "fx_change_pct": 11.7,
+        "reactions": {
+          "BTC": { "byn_pct": 20.0,  "usd_mdd": 0.0,   "usd_pct": 7.4,   "ar_usd": 2.2,  "ar_byn": 14.4 },
+          "ETH": { "byn_pct": 17.1,  "usd_mdd": 0.0,   "usd_pct": 4.8,   "ar_usd": -1.7, "ar_byn": 10.2 },
+          "TRX": { "byn_pct": 12.5,  "usd_mdd": 0.0,   "usd_pct": 0.7,   "ar_usd": -4.0, "ar_byn": 7.4 }
+        },
+        "comment": "Рост в BYN во многом объясняется девальвацией рубля (+11,7 %)" },
+  
+      { "id": "e09", "month": "2022-03", "event": "Отключение банков РФ от SWIFT, заморозка резервов", "mechanism": "functional_adaptation",
+        "fx_change_pct": 4.3,
+        "reactions": {
+          "BTC": { "byn_pct": 15.1,  "usd_mdd": -15.5, "usd_pct": 10.3,  "ar_usd": 5.1,  "ar_byn": 9.5 },
+          "ETH": { "byn_pct": 22.3,  "usd_mdd": -14.5, "usd_pct": 17.2,  "ar_usd": 10.7, "ar_byn": 15.4 },
+          "TRX": { "byn_pct": 33.3,  "usd_mdd": -19.4, "usd_pct": 27.8,  "ar_usd": 23.1, "ar_byn": 28.2 }
+        },
+        "comment": "Рост; спрос на альтернативные каналы расчётов. MDD — адаптация, затем коррекция" },
+  
+      { "id": "e10", "month": "2022-05", "event": "Крах Terra (LUNA)", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -20.6, "usd_mdd": -50.8, "usd_pct": null, "ar_byn": -26.2 },
+          "ETH": { "byn_pct": -33.5, "usd_mdd": -63.7, "usd_pct": null, "ar_byn": -40.4 },
+          "TRX": { "byn_pct": 30.0,  "usd_mdd": -22.1, "usd_pct": null, "ar_byn": 24.9 }
+        },
+        "comment": "Кризис доверия: BTC и ETH падают, TRX растёт" },
+  
+      { "id": "e11", "month": "2022-11", "event": "Банкротство биржи FTX", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -15.6, "usd_mdd": -18.6, "usd_pct": null, "ar_byn": -21.2 },
+          "ETH": { "byn_pct": -17.0, "usd_mdd": -23.0, "usd_pct": null, "ar_byn": -23.9 },
+          "TRX": { "byn_pct": -16.7, "usd_mdd": -17.1, "usd_pct": null, "ar_byn": -21.8 }
+        },
+        "comment": "Синхронное падение: внутриотраслевой шок" },
+  
+      { "id": "e12", "month": "2023-03", "event": "Банковский кризис в США (SVB)", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 22.6,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 17.0 },
+          "ETH": { "byn_pct": 12.7,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 5.8 },
+          "TRX": { "byn_pct": 0.0,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -5.1 }
+        },
+        "comment": "Рост BTC на фоне проблем банков США" },
+  
+      { "id": "e13", "month": "2023-06", "event": "Иск SEC к Binance", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": 11.0,  "usd_mdd": -4.0,  "usd_pct": null, "ar_byn": 5.4 },
+          "ETH": { "byn_pct": 1.9,   "usd_mdd": -3.4,  "usd_pct": null, "ar_byn": -5.0 },
+          "TRX": { "byn_pct": 0.0,   "usd_mdd": -0.2,  "usd_pct": null, "ar_byn": -5.1 }
+        },
+        "comment": "Иск не остановил рост BTC (заявки на спотовые ETF)" },
+  
+      { "id": "e14", "month": "2023-10", "event": "Обострение на Ближнем Востоке", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 22.6,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 17.0 },
+          "ETH": { "byn_pct": 3.4,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -3.5 },
+          "TRX": { "byn_pct": 4.0,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -1.1 }
+        },
+        "comment": "Рост BTC связан скорее с ожиданием ETF" },
+  
+      { "id": "e15", "month": "2024-01", "event": "Одобрение спотовых BTC-ETF в США", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -1.1,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -6.7 },
+          "ETH": { "byn_pct": -1.5,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -8.4 },
+          "TRX": { "byn_pct": 3.2,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -1.9 }
+        },
+        "comment": "Коррекция после одобрения («продажа на новостях»)" },
+  
+      { "id": "e16", "month": "2024-04", "event": "Халвинг 2024 и удар Ирана по Израилю", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -18.7, "usd_mdd": -16.8, "usd_pct": null, "ar_byn": -24.3 },
+          "ETH": { "byn_pct": -21.2, "usd_mdd": -19.4, "usd_pct": null, "ar_byn": -28.1 },
+          "TRX": { "byn_pct": -5.7,  "usd_mdd": -8.2,  "usd_pct": null, "ar_byn": -10.8 }
+        },
+        "comment": "Снижение BTC и ETH на фоне эскалации" },
+  
+      { "id": "e17", "month": "2024-05", "event": "Одобрение ETH-ETF в США", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 16.5,  "usd_mdd": -8.4,  "usd_pct": null, "ar_byn": 10.9 },
+          "ETH": { "byn_pct": 31.2,  "usd_mdd": -9.5,  "usd_pct": null, "ar_byn": 24.3 },
+          "TRX": { "byn_pct": -3.0,  "usd_mdd": -4.8,  "usd_pct": null, "ar_byn": -8.1 }
+        },
+        "comment": "Рост ETH на ожиданиях одобрения ETF" },
+  
+      { "id": "e18", "month": "2024-07", "event": "Покушение на Д. Трампа", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": 4.8,   "usd_mdd": -9.0,  "usd_pct": null, "ar_byn": -0.8 },
+          "ETH": { "byn_pct": -4.4,  "usd_mdd": -27.0, "usd_pct": null, "ar_byn": -11.3 },
+          "TRX": { "byn_pct": 2.8,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -2.3 }
+        },
+        "comment": "Слабая реакция; падение ETH" },
+  
+      { "id": "e19", "month": "2024-10", "event": "Саммит БРИКС в Казани", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 10.1,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 4.5 },
+          "ETH": { "byn_pct": -3.3,  "usd_mdd": -3.2,  "usd_pct": null, "ar_byn": -10.2 },
+          "TRX": { "byn_pct": 6.8,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 1.7 }
+        },
+        "comment": "Умеренный рост; связь с саммитом не выражена" },
+  
+      { "id": "e20", "month": "2024-11", "event": "Победа Д. Трампа на выборах", "mechanism": "functional_adaptation",
+        "reactions": {
+          "BTC": { "byn_pct": 36.3,  "usd_mdd": -3.2,  "usd_pct": null, "ar_byn": 30.7 },
+          "ETH": { "byn_pct": 44.2,  "usd_mdd": -9.2,  "usd_pct": null, "ar_byn": 37.3 },
+          "TRX": { "byn_pct": 21.3,  "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 16.2 }
+        },
+        "comment": "Резкий рост на ожиданиях мягкого регулирования" },
+  
+      { "id": "e21", "month": "2025-03", "event": "Указ о Стратегическом биткоин-резерве США", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -0.3,  "usd_mdd": -2.4,  "usd_pct": null, "ar_byn": -5.9 },
+          "ETH": { "byn_pct": -16.3, "usd_mdd": -19.6, "usd_pct": null, "ar_byn": -23.2 },
+          "TRX": { "byn_pct": 6.0,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": 0.9 }
+        },
+        "comment": "Роста нет: резерв сформирован из конфискованных BTC без новых покупок. ETH падает" },
+  
+      { "id": "e22", "month": "2025-06", "event": "Война Израиля и Ирана, удары США по Ирану", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": 1.7,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -3.9 },
+          "ETH": { "byn_pct": -2.1,  "usd_mdd": -1.1,  "usd_pct": null, "ar_byn": -9.0 },
+          "TRX": { "byn_pct": 3.8,   "usd_mdd": 0.0,   "usd_pct": null, "ar_byn": -1.3 }
+        },
+        "comment": "Слабая реакция на вооружённый конфликт" },
+  
+      { "id": "e23", "month": "2025-10", "event": "Угроза 100%-х пошлин против КНР, ликвидации 10.10.2025", "mechanism": "primary_shock",
+        "market_metric": { "label": "Принудительные ликвидации", "display": "≈ 19 млрд $" },
+        "reactions": {
+          "BTC": { "byn_pct": -3.3,  "usd_mdd": -20.6, "usd_pct": null, "ar_byn": -8.9 },
+          "ETH": { "byn_pct": -5.7,  "usd_mdd": -27.1, "usd_pct": null, "ar_byn": -12.6 },
+          "TRX": { "byn_pct": -10.2, "usd_mdd": -15.0, "usd_pct": null, "ar_byn": -15.3 }
+        },
+        "comment": "Рекордные ликвидации, снижение всех активов" },
+  
+      { "id": "e24", "month": "2026-02", "event": "Распродажа на фоне сокращения кредитного плеча", "mechanism": "primary_shock",
+        "reactions": {
+          "BTC": { "byn_pct": -15.4, "usd_mdd": -14.1, "usd_pct": null, "ar_byn": -21.0 },
+          "ETH": { "byn_pct": -19.5, "usd_mdd": -18.3, "usd_pct": null, "ar_byn": -26.4 },
+          "TRX": { "byn_pct": -3.6,  "usd_mdd": -2.1,  "usd_pct": null, "ar_byn": -8.7 }
+        },
+        "comment": "Сокращение кредитного плеча; падение вместе с рисковыми активами" }
+    ],
+    "avg_mdd_by_subperiod": {
+      "metric": "Средняя MDD в окнах событий, %",
+      "source": "Рассчитано по таблице 2.2",
+      "series": [
+        { "asset": "BTC", "p1_2019_2021": 11.8, "p2_2022_2026": 9.6,  "delta": -2.2 },
+        { "asset": "ETH", "p1_2019_2021": 11.2, "p2_2022_2026": 14.1, "delta": 2.9 },
+        { "asset": "TRX", "p1_2019_2021": 14.1, "p2_2022_2026": 5.2,  "delta": -8.9 }
+      ],
+      "highlight": "TRX: в 10 из 17 событий второго подпериода просадка не превышала 1 %"
+    },
+    "abnormal_returns": {
+      "methodology": "AR = re − r̄ (формулы 1.4–1.5); r̄ — средняя месячная доходность из таблицы 2.3",
+      "r_bar_usd": { "BTC": 5.2, "ETH": 6.5, "TRX": 4.7 },
+      "r_bar_byn_approx": { "BTC": 5.6, "ETH": 6.9, "TRX": 5.1, "note": "≈ r̄_USD + r̄_USD/BYN (0,4 %); точное значение требует полного ряда" },
+      "usd_ar_complete": [
+        { "month": "2020-03", "event": "COVID-19", "status": "exact_from_source",
+          "BTC": { "re_usd": -25.5, "ar": -30.7 },
+          "ETH": { "re_usd": -41.8, "ar": -48.3 },
+          "TRX": { "re_usd": -36.8, "ar": -41.5 } },
+        { "month": "2022-02", "event": "Начало СВО", "status": "derived_from_byn_and_fx",
+          "fx_change_pct": 11.7,
+          "BTC": { "re_usd": 7.4,  "ar": 2.2 },
+          "ETH": { "re_usd": 4.8,  "ar": -1.7 },
+          "TRX": { "re_usd": 0.7,  "ar": -4.0 } },
+        { "month": "2022-03", "event": "SWIFT/заморозка", "status": "derived_from_byn_and_fx",
+          "fx_change_pct": 4.3,
+          "BTC": { "re_usd": 10.3, "ar": 5.1 },
+          "ETH": { "re_usd": 17.2, "ar": 10.7 },
+          "TRX": { "re_usd": 27.8, "ar": 23.1 } }
+      ],
+      "usd_ar_t_stats": {
+        "n_events": 3,
+        "note": "Для полной USD-AR по 24 событиям нужен ряд А.1",
+        "BTC": { "mean_ar": -7.78, "sd_ar": 19.90, "t": -0.68 },
+        "ETH": { "mean_ar": -13.08, "sd_ar": 31.12, "t": -0.73 },
+        "TRX": { "mean_ar": -7.47, "sd_ar": 32.43, "t": -0.40 }
+      },
+      "byn_ar_approximate": {
+        "n_events": 24,
+        "note": "AR по BYN-доходностям из таблицы 2.1 и приближённому r̄_BYN. Помечено как приближение — для строгой USD-AR нужен полный ряд.",
+        "full": {
+          "BTC": { "mean_ar": 1.31, "sd_ar": 22.06, "t": 0.29 },
+          "ETH": { "mean_ar": -1.44, "sd_ar": 26.15, "t": -0.27 },
+          "TRX": { "mean_ar": -0.02, "sd_ar": 19.32, "t": -0.004 }
+        },
+        "by_subperiod": {
+          "2019_2021": {
+            "n": 7,
+            "BTC": { "mean_ar": 5.84, "sd_ar": 33.6 },
+            "ETH": { "mean_ar": 10.64, "sd_ar": 32.4 },
+            "TRX": { "mean_ar": 0.26, "sd_ar": 30.2 }
+          },
+          "2022_2026": {
+            "n": 17,
+            "BTC": { "mean_ar": -0.56, "sd_ar": 17.7 },
+            "ETH": { "mean_ar": -6.41, "sd_ar": 22.5 },
+            "TRX": { "mean_ar": -0.13, "sd_ar": 14.6 }
+          }
+        },
+        "interpretation": "Средняя AR по всем событиям близка к нулю — события разнонаправлены. По подпериодам видно снижение AR: у ETH с +10,6 % до −6,4 % — рынок стал менее чувствителен к отдельным новостям."
+      }
+    },
+    "long_drawdowns": [
+      { "asset": "BTC", "start": "2021-10", "end": "2022-12", "pct": -72.7, "display": "−72,7 %" },
+      { "asset": "BTC", "start": "2025-09", "end": "2026-06", "pct": -48.7, "display": "−48,7 %" }
+    ]
+  }
