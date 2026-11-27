@@ -1,17 +1,15 @@
 const DATA = {};
 
-// Цвета в стиле "редакционного" дизайна
 const COLORS = {
-  BTC: '#0F4F45', // Глубокий зеленый (основной акцент)
-  ETH: '#1A1C18', // Почти черный
-  TRX: '#A88A41', // Горчичный/золотой
-  USD: '#D1CDC0'  // Серый
+  BTC: '#000000',
+  ETH: '#999999',
+  TRX: '#B8FF3D',
+  USD: '#93D225'
 };
 
-const FONT_SANS = "'Inter', sans-serif";
-const FONT_SERIF = "'PT Serif', serif";
-const TEXT_MUTED = '#6B6D66';
-const GRID_COLOR = 'rgba(209, 205, 192, 0.4)'; // Очень бледная сетка
+const FONT = "'Montserrat', sans-serif";
+const TEXT_MUTED = '#666666';
+const GRID_COLOR = '#EEEEEE';
 
 const MONTHS_RU = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
 
@@ -29,7 +27,7 @@ const fmtMonth = (m) => {
 async function loadAll() {
   const files = ['kpis', 'risk', 'events', 'criteria', 'prices'];
   const results = await Promise.all(files.map(f =>
-    fetch(`data/${f}.json`).then(r => {
+    fetch(`./data/${f}.json`).then(r => {
       if (!r.ok) throw new Error(`${f}: HTTP ${r.status}`);
       return r.json();
     }).then(j => ({ ok: true, data: j }))
@@ -40,6 +38,7 @@ async function loadAll() {
     if (results[i].ok) DATA[f] = results[i].data;
     else errors.push(results[i].error);
   });
+  if (errors.length) console.error('Ошибки загрузки:', errors);
   return errors;
 }
 
@@ -47,27 +46,23 @@ function renderKPIs() {
   const wrap = document.getElementById('kpis');
   if (!DATA.kpis?.kpis) return;
   
-  // Берем только первые 4 KPI для красоты сетки 2x2
   const topKpis = DATA.kpis.kpis.slice(0, 4);
   
   wrap.innerHTML = topKpis.map(k => {
-    // Разделяем значение и единицу измерения (например, "67,0 %" -> "67,0" и "%")
     const match = k.display.match(/^([^%]+)(\s*%)?$/);
     const val = match ? match[1].trim() : k.display;
     const unit = match && match[2] ? match[2].trim() : '';
 
     return `
       <div class="kpi-card">
-        <div class="kpi-header">
-          <div class="kpi-label">${k.label}</div>
-        </div>
         <div>
+          <div class="kpi-label">${k.label}</div>
           <div class="kpi-value-wrap">
             <div class="kpi-value">${val}</div>
             <div class="kpi-unit">${unit}</div>
           </div>
-          <div class="kpi-desc">${k.note}</div>
         </div>
+        <div class="kpi-desc">${k.note}</div>
       </div>`;
   }).join('');
 }
@@ -91,7 +86,7 @@ function renderMatrix() {
                  : cell.signal === 'mixed'? '~' : '—';
       html += `<td>
         <div class="badge ${cls}">${icon}</div><br>
-        <span style="color:var(--text-muted); font-size:0.8rem;">${cell.text || ''}</span>
+        <span style="color:var(--text-muted); font-weight:600;">${cell.text || ''}</span>
       </td>`;
     });
     html += '</tr>';
@@ -131,26 +126,27 @@ function renderPriceChart() {
   const canvas = document.getElementById('priceChart');
   if (!s || !canvas) return;
 
-  Chart.defaults.font.family = FONT_SANS;
+  Chart.defaults.font.family = FONT;
   Chart.defaults.color = TEXT_MUTED;
+  Chart.defaults.font.weight = '600';
 
   new Chart(canvas.getContext('2d'), {
     type: 'line',
     data: {
       labels: s.labels,
       datasets: [
-        { label: 'BTC', data: s.btc, borderColor: COLORS.BTC, backgroundColor: COLORS.BTC + '14', fill: true, tension: .3, pointRadius: 3, pointBackgroundColor: COLORS.BTC, borderWidth: 2 },
-        { label: 'ETH', data: s.eth, borderColor: COLORS.ETH, backgroundColor: 'transparent', fill: false, tension: .3, pointRadius: 3, pointBackgroundColor: COLORS.ETH, borderWidth: 2, borderDash: [5, 5] },
-        { label: 'TRX', data: s.trx, borderColor: COLORS.TRX, backgroundColor: 'transparent', fill: false, tension: .3, pointRadius: 3, pointBackgroundColor: COLORS.TRX, borderWidth: 2 }
+        { label: 'BTC', data: s.btc, borderColor: COLORS.BTC, backgroundColor: 'rgba(0,0,0,0.05)', fill: true, tension: .3, pointRadius: 3, borderWidth: 3 },
+        { label: 'ETH', data: s.eth, borderColor: COLORS.ETH, backgroundColor: 'transparent', fill: false, tension: .3, pointRadius: 3, borderWidth: 2, borderDash: [5, 5] },
+        { label: 'TRX', data: s.trx, borderColor: COLORS.TRX, backgroundColor: 'transparent', fill: false, tension: .3, pointRadius: 3, borderWidth: 3 }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8, font: { size: 12, family: FONT_SANS } } },
+        legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8 } },
         tooltip: {
-          backgroundColor: '#1A1C18', titleFont: { family: FONT_SERIF, size: 14 }, bodyFont: { family: FONT_SANS, size: 13 }, padding: 12, cornerRadius: 8,
+          backgroundColor: '#000', padding: 12, cornerRadius: 10,
           callbacks: {
             title: items => `${s.labels[items[0].dataIndex]} — ${s.evNames[items[0].dataIndex]}`,
             label: ctx => {
@@ -162,8 +158,8 @@ function renderPriceChart() {
         }
       },
       scales: {
-        x: { ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 10, font: { size: 11 } }, grid: { display: false } },
-        y: { type: 'linear', beginAtZero: true, grid: { color: GRID_COLOR, drawBorder: false }, ticks: { callback: v => v >= 1000 ? (v/1000)+'k' : v } }
+        x: { ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 10 }, grid: { display: false } },
+        y: { type: 'linear', beginAtZero: true, grid: { color: GRID_COLOR }, ticks: { callback: v => v >= 1000 ? (v/1000)+'k' : v } }
       }
     }
   });
@@ -180,14 +176,12 @@ function updateRiskChart(metricId) {
   
   const assets = ['BTC', 'ETH', 'TRX', 'USDBYN'];
   const labels = ['BTC', 'ETH', 'TRX', 'USD/BYN'];
-  const colors = [COLORS.BTC, COLORS.ETH, COLORS.TRX, '#1A1C18'];
+  const colors = [COLORS.BTC, COLORS.ETH, COLORS.TRX, COLORS.USD];
   const values = assets.map(a => m.values[a] == null ? null : Math.abs(m.values[a]));
-  const titleText = m.label + (m.unit === '%' ? ', %' : '');
 
   if (riskChart) {
     riskChart.data.datasets[0].data = values;
     riskChart.data.datasets[0].backgroundColor = colors;
-    riskChart.options.plugins.title.text = titleText;
     riskChart.update();
   } else {
     riskChart = new Chart(document.getElementById('riskChart').getContext('2d'), {
@@ -195,19 +189,18 @@ function updateRiskChart(metricId) {
       data: {
         labels,
         datasets: [{
-          label: titleText, data: values, backgroundColor: colors, borderRadius: 4, barThickness: 48
+          data: values, backgroundColor: colors, borderRadius: 6, barThickness: 48
         }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: titleText, font: { family: FONT_SERIF, size: 16, weight: 'normal' }, padding: { bottom: 24 }, align: 'start' },
-          tooltip: { backgroundColor: '#1A1C18', padding: 10, callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1).replace('.', ',')} %` } }
+          tooltip: { backgroundColor: '#000', padding: 10, callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1).replace('.', ',')} %` } }
         },
         scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 12, weight: '500' } } },
-          y: { beginAtZero: true, grid: { color: GRID_COLOR, drawBorder: false }, ticks: { callback: v => v + '%' } }
+          x: { grid: { display: false } },
+          y: { beginAtZero: true, grid: { color: GRID_COLOR }, ticks: { callback: v => v + '%' } }
         }
       }
     });
@@ -257,20 +250,19 @@ function renderSubperiodChart() {
     data: {
       labels: s.map(x => x.asset),
       datasets: [
-        { label: '2019–2021', data: s.map(x => x.p1_2019_2021), backgroundColor: '#D1CDC0', borderRadius: 4 },
-        { label: '2022–2026', data: s.map(x => x.p2_2022_2026), backgroundColor: COLORS.BTC, borderRadius: 4 }
+        { label: '2019–2021', data: s.map(x => x.p1_2019_2021), backgroundColor: '#999999', borderRadius: 6 },
+        { label: '2022–2026', data: s.map(x => x.p2_2022_2026), backgroundColor: COLORS.BTC, borderRadius: 6 }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8, font: { size: 12 } } },
-        title: { display: true, text: 'Средняя просадка в окнах событий, %', font: { family: FONT_SERIF, size: 16, weight: 'normal' }, padding: { bottom: 24 }, align: 'start' },
-        tooltip: { backgroundColor: '#1A1C18', padding: 10, callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1).replace('.', ',')} %` } }
+        legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8 } },
+        tooltip: { backgroundColor: '#000', padding: 10, callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1).replace('.', ',')} %` } }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 12, weight: '500' } } },
-        y: { beginAtZero: true, grid: { color: GRID_COLOR, drawBorder: false }, ticks: { callback: v => v + '%' } }
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, grid: { color: GRID_COLOR }, ticks: { callback: v => v + '%' } }
       }
     }
   });
@@ -305,12 +297,12 @@ function renderPortfolio() {
         {
           label: 'Волатильность',
           data: ws.map(w => ({ x: +(w * 100).toFixed(1), y: +portfolioVol(w).toFixed(2) })),
-          borderColor: COLORS.BTC, backgroundColor: COLORS.BTC + '10', fill: true, tension: .4, pointRadius: 0, borderWidth: 2
+          borderColor: COLORS.BTC, backgroundColor: COLORS.BTC, fill: false, tension: .4, pointRadius: 0, borderWidth: 3
         },
         {
           label: 'Текущий',
           data: [{ x: 0, y: portfolioVol(0) }],
-          borderColor: COLORS.ETH, backgroundColor: COLORS.ETH, pointRadius: 6, pointHoverRadius: 8, showLine: false
+          borderColor: COLORS.TRX, backgroundColor: COLORS.TRX, pointRadius: 6, pointHoverRadius: 8, showLine: false
         }
       ]
     },
@@ -320,7 +312,7 @@ function renderPortfolio() {
         legend: { display: false },
         tooltip: {
           filter: item => item.datasetIndex === 0,
-          backgroundColor: '#1A1C18',
+          backgroundColor: '#000',
           callbacks: {
             title: items => `Доля BTC: ${items[0].parsed.x} %`,
             label: ctx => `Волатильность: ${ctx.parsed.y.toFixed(1).replace('.', ',')} %`
@@ -328,8 +320,8 @@ function renderPortfolio() {
         }
       },
       scales: {
-        x: { type: 'linear', min: 0, max: 100, grid: { display: false }, ticks: { callback: v => v + '%', font: { size: 11 } } },
-        y: { beginAtZero: true, grid: { color: GRID_COLOR, drawBorder: false }, ticks: { callback: v => v + '%', font: { size: 11 } } }
+        x: { type: 'linear', min: 0, max: 100, grid: { display: false }, ticks: { callback: v => v + '%' } },
+        y: { beginAtZero: true, grid: { color: GRID_COLOR }, ticks: { callback: v => v + '%' } }
       }
     }
   });
