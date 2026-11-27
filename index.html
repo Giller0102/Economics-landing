@@ -3,195 +3,181 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Криптовалюты: резервный потенциал и чувствительность к шокам | ВГТУ 2026</title>
-  <meta name="description" content="Интерактивный аналитический обзор: волатильность, VaR, максимальная просадка BTC, ETH, TRX и реакция на геополитические шоки, 2019–2026.">
-  <meta name="theme-color" content="#F5F3EC">
-  
-  <!-- Подключаем шрифты для "журнального" стиля -->
+  <title>Криптовалюты как резервный актив | ВГТУ 2026</title>
+  <meta name="description" content="Интерактивные метрики исследования ВГТУ: волатильность, VaR/CVaR, максимальная просадка BTC, ETH, TRX и реакция на геополитические шоки, 2019–2026.">
+  <meta name="theme-color" content="#ffffff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
   <style>
     :root {
-      --bg: #F5F3EC;          /* Тёплый кремовый фон */
-      --bg-card: #FFFFFF;     /* Белые карточки */
-      --bg-accent: #EAE6DB;   /* Фон для тегов/плашек */
-      --text-main: #1A1C18;   /* Почти чёрный */
-      --text-muted: #6B6D66;  /* Серый для описаний */
-      --border: #D1CDC0;      /* Тонкие рамки */
-      
-      --color-green: #0F4F45; /* Глубокий зелёный (акцент) */
-      --color-green-light: #E1E9E7;
-      --color-red: #B34B41;   /* Терракота для негатива */
-      --color-yellow: #A88A41;/* Горчичный для предупреждений */
-      
-      --font-serif: 'PT Serif', serif;
-      --font-sans: 'Inter', sans-serif;
+      --bg: #ffffff;
+      --text-main: #000000;
+      --text-muted: #666666;
+      --accent-green: #B8FF3D;
+      --text-green: #93D225;
+      --radius: 10px;
+      --font: 'Montserrat', sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: var(--font-sans);
-      background: var(--bg);
+      font-family: var(--font);
+      background-color: var(--bg);
       color: var(--text-main);
-      line-height: 1.5;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+    section { padding: 64px 0; border-bottom: 1px solid #eee; }
     section:last-of-type { border-bottom: none; }
 
-    /* --- Типографика --- */
-    h1, h2, h3, .serif { font-family: var(--font-serif); font-weight: 700; }
-    h1 { font-size: clamp(2rem, 6vw, 3.2rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; }
-    h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.2; margin-bottom: 12px; }
-    .section-sub { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 32px; max-width: 700px; }
+    h1, h2, h3 { font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
+    h1 { font-size: clamp(1.8rem, 5vw, 3rem); line-height: 1.1; margin-bottom: 24px; }
+    h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 12px; }
+    
+    .section-sub { font-size: 1rem; color: var(--text-muted); margin-bottom: 32px; font-weight: 600; }
 
-    /* --- Hero --- */
-    .hero { padding: 80px 0 60px; border-bottom: 1px solid var(--border); }
-    .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main); margin-bottom: 24px; }
-    .hero-tag::before { content: ''; display: block; width: 8px; height: 8px; background: var(--color-green); border-radius: 50%; }
-    .hero .meta { font-size: 0.9rem; color: var(--text-muted); margin-top: 24px; }
+    .gradient-line { height: 6px; background: linear-gradient(90deg, #000000, #B8FF3D); width: 100%; }
 
-    /* --- KPI Cards --- */
+    .hero { padding: 80px 0 60px; }
+    .hero .meta { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.05em; }
+
     .kpi-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
     @media (min-width: 640px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
     
     .kpi-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px;
+      background: var(--bg); border: 2px solid #000;
+      border-radius: var(--radius); padding: 24px;
       display: flex; flex-direction: column; justify-content: space-between;
     }
-    .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
-    .kpi-label { font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
-    .kpi-note { font-size: 0.8rem; color: var(--text-muted); }
+    .kpi-card:nth-child(even) { border-color: var(--accent-green); }
     
-    .kpi-value-wrap { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-    .kpi-value { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 700; line-height: 1; }
-    .kpi-unit { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
-    .kpi-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+    .kpi-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; }
+    .kpi-value-wrap { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+    .kpi-value { font-size: 3rem; font-weight: 800; line-height: 1; color: var(--text-green); font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; line-height: 1; color: var(--text-green)}
+    .kpi-unit { font-size: 1.2rem; font-weight: 800; color: var(--text-green); }
+    .kpi-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
 
-    /* --- Интерактивные элементы (Табы) --- */
-    .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .tabs { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
     .tab {
-      padding: 10px 20px; background: transparent; border: 1px solid var(--border);
-      border-radius: 100px; font-family: var(--font-sans); font-size: 0.85rem;
-      font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+      padding: 10px 20px; background: transparent; border: 2px solid var(--accent-green);
+      border-radius: var(--radius); font-family: var(--font); font-size: 0.85rem;
+      font-weight: 600; color: var(--text-main); cursor: pointer; transition: all 0.2s;
     }
-    .tab.active { background: var(--text-main); color: #fff; border-color: var(--text-main); }
-    .tab:hover:not(.active) { background: var(--bg-accent); }
+    .tab.active { background: var(--accent-green); color: #000; }
 
-    /* --- Графики --- */
     .chart-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px 20px;
+      background: var(--bg); border: 2px solid #000;
+      border-radius: var(--radius); padding: 24px 20px;
     }
     .chart-wrap { position: relative; height: 320px; width: 100%; }
     @media (min-width: 768px) { .chart-wrap { height: 400px; } }
 
-    /* --- Матрица --- */
     .table-container {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; overflow-x: auto;
+      background: var(--bg); border: 2px solid #000;
+      border-radius: var(--radius); overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .table-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background: var(--text-muted);
+      border-radius: 10px;
     }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
-    th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
-    th { font-weight: 600; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; background: #FAFAF8; }
+    th, td { padding: 16px; text-align: left; border-bottom: 2px solid #eee; vertical-align: top; }
+    th { font-weight: 800; text-transform: uppercase; background: #fff; color: var(--text-main); }
     tr:last-child td { border-bottom: none; }
     
-    .badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 0.75rem; font-weight: bold; margin-bottom: 8px; }
-    .badge.good { background: var(--color-green-light); color: var(--color-green); }
-    .badge.mixed { background: #F5EEDC; color: var(--color-yellow); }
-    .badge.bad { background: #F6E5E3; color: var(--color-red); }
-    .badge.na { background: var(--bg-accent); color: var(--text-muted); }
+    .badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 0.75rem; font-weight: bold; margin-bottom: 8px; color: #000; }
+    .badge.good { background: var(--accent-green); }
+    .badge.mixed { background: #E5E5E5; color: #666; }
+    .badge.bad { background: #000; color: #fff; }
+    .badge.na { background: transparent; border: 1px solid #ccc; color: #999; }
 
     /* --- Лента событий --- */
     .events-strip { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; }
     .events-strip::-webkit-scrollbar { height: 6px; }
-    .events-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    .events-strip::-webkit-scrollbar-thumb { background: var(--accent-green); border-radius: var(--radius); }
     .event-card {
       flex: 0 0 280px; scroll-snap-align: start;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
+      background: var(--bg); border: 2px solid #000;
+      border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column;
+      flex: 0 0 85vw;
+      max-width: 280px;
+      scroll-snap-align: start;
+      background: var(--bg); border: 2px solid #000;
+      border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column;
     }
-    .ev-date { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-    .ev-name { font-family: var(--font-serif); font-size: 1.1rem; line-height: 1.3; margin-bottom: 20px; flex-grow: 1; }
+    .ev-date { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+    .ev-name { font-size: 1.1rem; font-weight: 800; line-height: 1.3; margin-bottom: 20px; flex-grow: 1; }
     .event-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-    .ev-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
-    .ev-badge.up { background: var(--color-green-light); color: var(--color-green); }
-    .ev-badge.down { background: #F6E5E3; color: var(--color-red); }
-    .ev-badge.flat { background: var(--bg-accent); color: var(--text-muted); }
+    .ev-badge { font-size: 0.75rem; padding: 4px 8px; border-radius: var(--radius); font-weight: 800; }
+    .ev-badge.up { background: var(--accent-green); color: #000; }
+    .ev-badge.down { background: #000; color: #fff; }
+    .ev-badge.flat { background: #eee; color: #666; }
 
-    /* --- Слайдер --- */
     .slider-layout { display: grid; gap: 32px; }
     @media (min-width: 768px) { .slider-layout { grid-template-columns: 1fr 1fr; } }
-    .slider-label { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 16px; }
-    input[type=range] { width: 100%; -webkit-appearance: none; height: 4px; background: var(--border); border-radius: 10px; outline: none; margin-bottom: 24px; }
-    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--color-green); border-radius: 50%; cursor: pointer; }
+    .slider-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 0.9rem; margin-bottom: 16px; text-transform: uppercase; }
+    input[type=range] { width: 100%; -webkit-appearance: none; height: 6px; background: #eee; border-radius: var(--radius); outline: none; margin-bottom: 24px; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; background: var(--accent-green); border: 2px solid #000; border-radius: 50%; cursor: pointer; }
     
     .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .res-box { background: var(--bg); padding: 16px; border-radius: 8px; }
-    .res-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
-    .res-val { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 700; }
+    .res-box { border: 2px solid #000; padding: 16px; border-radius: var(--radius); }
+    .res-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
+    .res-val { font-size: 1.8rem; font-weight: 800; color: var(--text-green); }
 
-    /* --- Выводы --- */
     .conclusions { display: grid; gap: 20px; }
-    .concl-item { display: flex; gap: 16px; }
-    .concl-num { font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-green); font-weight: 700; line-height: 1; }
-    .concl-item p { font-size: 0.95rem; line-height: 1.6; }
+    .concl-item { display: flex; gap: 16px; border-bottom: 2px solid #eee; padding-bottom: 16px; }
+    .concl-num { font-size: 1.5rem; color: var(--text-green); font-weight: 800; line-height: 1; }
+    .concl-item p { font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
 
-    .note { font-size: 0.85rem; color: var(--text-muted); background: var(--bg-accent); padding: 16px; border-radius: 8px; margin-top: 24px; line-height: 1.5; }
+    .note { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; background: #FAFAFA; padding: 16px; border-left: 4px solid var(--accent-green); border-radius: 0 var(--radius) var(--radius) 0; margin-top: 24px; }
 
-    footer { padding: 48px 0; text-align: center; border-top: 1px solid var(--border); }
-    footer p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+    footer { padding: 48px 0; text-align: center; border-top: 2px solid #000; }
+    footer p { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
+  <div class="gradient-line"></div>
+
   <header class="hero">
     <div class="container">
-      <div class="hero-tag">Выпуск № 04 • I кв. 2026</div>
-      <h1>Криптовалюты на распутье: резервный потенциал против рыночных шоков</h1>
-      <p class="section-sub" style="margin-bottom:0; font-size:1.1rem;">Интерактивный аналитический обзор чувствительности цифровых активов (BTC, ETH, TRX) к геополитическим и макроэкономическим событиям на основе данных 2019–2026 гг.</p>
-      <div class="meta">Борисевич В. Д., Черных А. В. · группа Ээб-5 · ВГТУ</div>
+      <h1>Криптовалюты как резервный актив: потенциал и чувствительность к шокам</h1>
+      <p class="section-sub">Интерактивная сводка метрик на основе данных 2019–2026 гг.</p>
+      <div class="meta">Борисевич В. Д., Черных А. В. · ВГТУ 2026</div>
     </div>
   </header>
 
-  <!-- KPI -->
   <section id="kpi-section">
     <div class="container">
-      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:32px; flex-wrap:wrap; gap:16px;">
-        <div>
-          <h2 class="serif" style="margin-bottom:8px;">Сводка ключевых показателей</h2>
-          <p class="section-sub" style="margin-bottom:0;">Риск криптовалют на порядок выше риска валютных резервов</p>
-        </div>
-      </div>
+      <h2>Ключевые метрики</h2>
+      <p class="section-sub">Риск криптовалют выше риска валютных резервов</p>
       <div class="kpi-grid" id="kpis"></div>
     </div>
   </section>
 
-  <!-- PRICE CHART -->
   <section id="price-section">
     <div class="container">
-      <h2>Динамика курсов BTC, ETH, TRX</h2>
-      <p class="section-sub">Индекс: 04.2019 = 100 · 25 ключевых точек из 24 событий (таблица 2.1 работы)</p>
+      <h2>Динамика курсов</h2>
+      <p class="section-sub">Индекс: старт = 100 · 24 ключевых события</p>
       <div class="chart-card">
         <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
       </div>
     </div>
   </section>
 
-  <!-- RISK CHART -->
   <section id="risk-section">
     <div class="container">
       <h2>Профиль риска</h2>
-      <p class="section-sub">Переключайте метрику · таблица 2.3 работы</p>
       <div class="tabs">
         <div class="tab active" data-metric="annual_volatility">Волатильность</div>
         <div class="tab" data-metric="var_95_month">VaR 95 %</div>
@@ -204,98 +190,63 @@
     </div>
   </section>
 
-  <!-- EVENTS STRIP -->
   <section id="events-section">
     <div class="container">
-      <h2>Реакция на 24 события</h2>
-      <p class="section-sub">Изменение курсов в BYN «до → после» · таблица 2.1 работы · листайте вбок →</p>
+      <h2>Реакция на события</h2>
+      <p class="section-sub">Изменение курсов в BYN · листайте вбок →</p>
       <div class="events-strip" id="events-strip"></div>
     </div>
   </section>
 
-  <!-- SUBPERIOD -->
   <section id="subperiod-section">
     <div class="container">
-      <h2>TRX: устойчивость растёт</h2>
-      <p class="section-sub">Средняя просадка в окнах событий, % · таблица 2.2 работы</p>
+      <h2>Устойчивость TRX</h2>
+      <p class="section-sub">Средняя просадка в окнах событий, %</p>
       <div class="chart-card">
         <div class="chart-wrap"><canvas id="subperiodChart"></canvas></div>
       </div>
       <div class="note">
-        У TRX средняя просадка в окнах событий сократилась с <strong>14,1 %</strong> до <strong>5,2 %</strong>, в 10 из 17 событий второго подпериода — не превышала 1 %. Это связано с ролью TRON как платёжной инфраструктуры.
+        У TRX средняя просадка сократилась с <strong>14,1 %</strong> до <strong>5,2 %</strong>. В 10 из 17 событий второго подпериода просадка не превышала 1 %.
       </div>
     </div>
   </section>
 
-  <!-- CRITERIA MATRIX -->
   <section id="criteria-section">
     <div class="container">
       <h2>Критерии резервного актива</h2>
-      <p class="section-sub">Сопоставление по стандарту BPM6 МВФ · таблица 1.1 работы</p>
+      <p class="section-sub">Сопоставление по стандарту BPM6</p>
       <div class="table-container">
         <table id="criteria-table">
           <tbody><tr><td>Загрузка...</td></tr></tbody>
         </table>
       </div>
-      <div class="note">
-        <strong>Вывод:</strong> единственное существенное преимущество биткоина перед традиционными резервами — устойчивость к блокировке на уровне протокола.
-      </div>
     </div>
   </section>
 
-  <!-- PORTFOLIO SLIDER -->
   <section id="portfolio-section">
     <div class="container">
       <h2>Портфельный калькулятор</h2>
-      <p class="section-sub">Модель (1.6): rₚ = (1 − w) · r<sub>USD</sub> + w · r<sub>BTC</sub></p>
+      <p class="section-sub">Модель: rₚ = (1 − w) · r<sub>USD</sub> + w · r<sub>BTC</sub></p>
       <div class="chart-card">
         <div class="slider-layout">
           <div>
             <div class="slider-label">
-              <span>Доля BTC в резервах (w)</span>
-              <span id="wVal">0 %</span>
+              <span>Доля BTC (w)</span>
+              <span id="wVal" style="color:var(--text-green);">0 %</span>
             </div>
             <input type="range" id="wSlider" min="0" max="100" step="1" value="0">
             <div class="res-grid">
               <div class="res-box">
-                <div class="res-label">Волатильность портфеля</div>
+                <div class="res-label">Волатильность</div>
                 <div class="res-val" id="portVol">12,5 %</div>
               </div>
               <div class="res-box">
-                <div class="res-label">VaR 95 % (месяц)</div>
-                <div class="res-val" id="portVar" style="color:var(--color-red);">−6,0 %</div>
+                <div class="res-label">VaR 95 %</div>
+                <div class="res-val" id="portVar">−6,0 %</div>
               </div>
             </div>
           </div>
           <div class="chart-wrap" style="height: 240px;"><canvas id="portChart"></canvas></div>
-        </div>
-        <div class="note" style="margin-top:24px;">
-          Иллюстрация на основе исторической волатильности BTC (67,0 %) и USD/BYN (12,5 %). VaR рассчитан по нормальному приближению. <strong>Не является прогнозом.</strong>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONCLUSIONS -->
-  <section id="conclusions-section">
-    <div class="container">
-      <h2>Выводы для резервов</h2>
-      <div class="conclusions">
-        <div class="concl-item">
-          <div class="concl-num">01</div>
-          <p><strong>Биткоин — диверсификатор, не «тихая гавань».</strong> В острых кризисах (COVID-19, −25,5 %) падает вместе с рисковыми активами.</p>
-        </div>
-        <div class="concl-item">
-          <div class="concl-num">02</div>
-          <p><strong>Единственное преимущество — санкционная устойчивость.</strong> Устойчивость к блокировке на уровне протокола при самостоятельном хранении ключей.</p>
-        </div>
-        <div class="concl-item">
-          <div class="concl-num">03</div>
-          <p><strong>Стейблкоины — компромисс «стабильность ↔ контроль».</strong> Стабильны по цене, но эмитент может заморозить токены.</p>
-        </div>
-        <div class="concl-item">
-          <div class="concl-num">04</div>
-          <p><strong>Доля крипто в резервах должна быть ограничена.</strong> MDD всех трёх активов превышала 60 %, VaR/CVaR в разы выше валютных.</p>
         </div>
       </div>
     </div>
@@ -304,10 +255,9 @@
   <footer>
     <div class="container">
       <p>Витебский государственный технологический университет · 2026</p>
-      <p>Борисевич В. Д., Черных А. В. · группа Ээб-5</p>
+      <p>Борисевич В. Д., Черных А. В.</p>
     </div>
   </footer>
-
-  <script src="script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
